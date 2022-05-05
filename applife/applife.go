@@ -32,7 +32,7 @@ func Start() CrpInitiator {
 	n := time.Now().In(loc).Format("2006-01-02 15:04:05")
 	startedTime := fmt.Sprintf(" - Started at : %v (%v)", n, tz)
 	colog.DoGray(startedTime)
-	colog.DoGreen(" - APP_ENV is :" + envier.GetAppEnv())
+	colog.DoGreen(" - APP_ENV is : " + envier.GetAppEnv())
 	return CrpInitiator{t}
 }
 
