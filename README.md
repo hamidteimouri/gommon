@@ -1,11 +1,35 @@
 # htutils
+
 Small packages for Golang
 
+# htcolog (Colorful console logger)
 
-# colog (Colorful console logger)
+example :
 
+```go
+htcolog.DoRed("prints a red string")
+```
 
-# envier ( ENV methods )
+# htenvier ( ENV methods )
 
+example :
 
-# lifecal ( Calculate up time of applications )
+```go
+htenvier.ENV("DB_NAME")
+```
+
+# htapplife ( Calculate uptime of applications )
+
+example :
+
+```go
+htapplife.Start()
+```
+
+# htregex ( Check common regex like email , ... )
+
+example :
+
+```go
+htregex.IsEmail("username@gmail.com")
+```

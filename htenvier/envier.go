@@ -1,4 +1,4 @@
-package envier
+package htenvier
 
 import (
 	_ "github.com/joho/godotenv/autoload"
@@ -31,7 +31,7 @@ func GetAppEnv() string {
 	return EnvToLower("APP_ENV")
 }
 
-/***************** Get mod of the project *********************/
+/***************** Get mode of the project *********************/
 
 func IsStage() bool {
 	return GetAppEnv() == "stage" || GetAppEnv() == "stg"

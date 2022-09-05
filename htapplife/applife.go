@@ -1,9 +1,9 @@
-package applife
+package htapplife
 
 import (
 	"fmt"
-	"github.com/hamidteimouri/htutils/colog"
-	"github.com/hamidteimouri/htutils/envier"
+	colog "github.com/hamidteimouri/htutils/htcolog"
+	envier "github.com/hamidteimouri/htutils/htenvier"
 	"os"
 	"os/signal"
 	"syscall"
@@ -11,32 +11,33 @@ import (
 )
 
 const (
-	TimeZone = "Asia/Tehran"
+	HTTimeZone   = "Asia/Tehran"
+	HTTimeFormat = "2006-01-02 15:04:05"
 )
 
-type CrpInitiator struct {
+type HTInitiator struct {
 	t time.Time
 }
 
-func Start() CrpInitiator {
+func Start() HTInitiator {
 	t := time.Now()
-	tz := envier.EnvOrDefault("HT_TIMEZONE", TimeZone)
+	tz := envier.EnvOrDefault("HT_TIMEZONE", HTTimeZone)
 	loc, err := time.LoadLocation(tz)
 	if err != nil {
-		loc, _ = time.LoadLocation(TimeZone)
-		tz = TimeZone
+		loc, _ = time.LoadLocation(HTTimeZone)
+		tz = HTTimeZone
 	}
 	colog.DoPurple("***************************")
 	colog.DoPurple("* Application is starting *")
 	colog.DoPurple("***************************")
-	n := time.Now().In(loc).Format("2006-01-02 15:04:05")
+	n := time.Now().In(loc).Format(HTTimeFormat)
 	startedTime := fmt.Sprintf(" - Started at : %v (%v)", n, tz)
 	colog.DoGray(startedTime)
 	colog.DoGreen(" - APP_ENV is : " + envier.GetAppEnv())
-	return CrpInitiator{t}
+	return HTInitiator{t}
 }
 
-func (ci CrpInitiator) Stop() {
+func (ci HTInitiator) Stop() {
 	endtime := fmt.Sprintf(" - Uptime : %v", time.Since(ci.t).String())
 	colog.DoGray(endtime)
 	colog.DoGray(" - The closing process is over")
