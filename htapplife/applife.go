@@ -2,11 +2,8 @@ package htapplife
 
 import (
 	"fmt"
-	colog "github.com/hamidteimouri/htutils/htcolog"
-	envier "github.com/hamidteimouri/htutils/htenvier"
-	"os"
-	"os/signal"
-	"syscall"
+	colog "github.com/hamidteimouri/gommon/htcolog"
+	envier "github.com/hamidteimouri/gommon/htenvier"
 	"time"
 )
 
@@ -42,17 +39,4 @@ func (ci HTInitiator) Stop() {
 	colog.DoGray(endtime)
 	colog.DoGray(" - The closing process is over")
 	colog.DoPurple("********* Stopped *********")
-}
-
-func ClosingSignalListener() (isForceToStop bool) {
-	ch := make(chan os.Signal)
-	signal.Notify(ch, os.Interrupt, syscall.SIGTERM)
-	switch <-ch {
-	case os.Interrupt:
-		return true
-	case syscall.SIGTERM:
-		return false
-	default:
-		return false
-	}
 }

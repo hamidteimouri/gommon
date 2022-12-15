@@ -1,18 +1,19 @@
-package htregex
+package htformat
 
 import (
 	"fmt"
+	"github.com/hamidteimouri/gommon/htregex"
 	"strconv"
 	"strings"
 )
 
-// MakeEmailInvisible remove email's characters.
-// for example converts username@gmail.com to use***@gmail.com
+// MakeEmailInvisible removes email's characters.
+// for example converts 'username@gmail.com' to 'use***@gmail.com'
 func MakeEmailInvisible(email string) string {
 	if email == "" {
 		return ""
 	}
-	if !IsEmail(email) {
+	if !htregex.IsEmail(email) {
 		return MakeUsernameInvisible(email)
 	}
 	split := strings.Split(email, "@")
@@ -32,8 +33,8 @@ func MakeEmailInvisible(email string) string {
 	return hiddenEmail
 }
 
-// MakeUsernameInvisible remove username's characters.
-// for example converts username to us***me
+// MakeUsernameInvisible removes username's characters.
+// for example converts 'username' to 'us***me'
 func MakeUsernameInvisible(username string) string {
 	if username == "" {
 		return ""

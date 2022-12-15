@@ -1,16 +1,26 @@
-# htutils
+# Gommon (Golang Common)
 
-Small packages for Golang
+Gommon is a golang common package that provides several methods to use in your projects.<br>
+Gommon has several sub-package :
 
-# htcolog (Colorful console logger)
+- htapplife
+- htblockchain
+- htcolog ( colorful console logger )
+- htenvier ( ENV methods )
+- htformat ( change format of a string like email , ... )
+- htrandom ( random generator )
+- htregex  ( work with regex )
+
+### htcolog
 
 example :
 
 ```go
-htcolog.DoRed("prints a red string")
+htcolog.DoGreen("prints a green string")
+htcolog.MakeRed("returns a red string")
 ```
 
-# htenvier ( ENV methods )
+### htenvier
 
 example :
 
@@ -18,15 +28,16 @@ example :
 htenvier.ENV("DB_NAME")
 ```
 
-# htapplife ( Calculate uptime of applications )
+### htformat
 
 example :
 
 ```go
-htapplife.Start()
+htformat.MakeEmailInvisible("exampleEmail@test.com") // output : exa***@test.com
+htformat.MakeUsernameInvisible("myusername") // output : my***me
 ```
 
-# htregex ( Check common regex like email , ... )
+### htregex
 
 example :
 

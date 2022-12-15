@@ -1,4 +1,4 @@
-module github.com/hamidteimouri/htutils
+module github.com/hamidteimouri/gommon
 
 go 1.16
 
