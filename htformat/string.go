@@ -65,3 +65,9 @@ func RemoveThousandsSeparator(number string) (float64, error) {
 	}
 	return unFormatted, nil
 }
+
+// Slugify converts a string to a slug.
+// for example converts "this is test" to "this-is-test"
+func Slugify(str string) string {
+	return strings.Replace(str, " ", "-", -1)
+}
