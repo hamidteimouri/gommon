@@ -1,7 +1,11 @@
 package htcountries
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
+	httpClientGoLib "github.com/trustwallet/go-libs/client"
 	"strings"
 )
 
@@ -264,4 +268,89 @@ func GetCountryById(countryId string) (string, error) {
 		return "", errors.New("not found")
 	}
 	return val, nil
+}
+
+func CountryByIp(ctx context.Context, ipAddress string) (*IpInfoResponse, error) {
+	if ipAddress == "" {
+		return nil, errors.New("ip address is required")
+	}
+
+	path := fmt.Sprintf("/%s/json", ipAddress)
+
+	req := httpClientGoLib.InitClient("https://ipapi.co", nil)
+
+	nb := httpClientGoLib.NewReqBuilder()
+	nb.Method("GET").PathStatic(path)
+	body, err := req.Execute(ctx, nb.Build())
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+	}
+	var resp IpApiCoResponse
+	err = json.Unmarshal(body, &resp)
+	if err != nil {
+		return nil, err
+	}
+	infoResponse := &IpInfoResponse{
+		CountryCode:        resp.CountryCode,
+		CountryCodeIso3:    resp.CountryCodeIso3,
+		CountryCallingCode: resp.CountryCallingCode,
+		CountryName:        resp.CountryName,
+		City:               resp.City,
+		RegionCode:         resp.RegionCode,
+		Region:             resp.Region,
+		Currency:           resp.Currency,
+		CurrencyName:       resp.CurrencyName,
+		Timezone:           resp.Timezone,
+		UtcOffset:          resp.UtcOffset,
+		InEu:               resp.InEu,
+	}
+
+	return infoResponse, nil
+
+}
+
+type IpInfoResponse struct {
+	CountryCode        string
+	CountryCodeIso3    string
+	CountryCallingCode string
+	CountryName        string
+	City               string
+	RegionCode         string
+	Region             string
+	Currency           string
+	CurrencyName       string
+	Timezone           string
+	UtcOffset          string
+	InEu               bool
+}
+
+type IpApiCoResponse struct {
+	Ip                 string      `json:"ip"`
+	Network            string      `json:"network"`
+	Version            string      `json:"version"`
+	City               string      `json:"city"`
+	Region             string      `json:"region"`
+	RegionCode         string      `json:"region_code"`
+	Country            string      `json:"country"`
+	CountryName        string      `json:"country_name"`
+	CountryCode        string      `json:"country_code"`
+	CountryCodeIso3    string      `json:"country_code_iso3"`
+	CountryCapital     string      `json:"country_capital"`
+	CountryTld         string      `json:"country_tld"`
+	ContinentCode      string      `json:"continent_code"`
+	InEu               bool        `json:"in_eu"`
+	Postal             interface{} `json:"postal"`
+	Latitude           float64     `json:"latitude"`
+	Longitude          float64     `json:"longitude"`
+	Timezone           string      `json:"timezone"`
+	UtcOffset          string      `json:"utc_offset"`
+	CountryCallingCode string      `json:"country_calling_code"`
+	Currency           string      `json:"currency"`
+	CurrencyName       string      `json:"currency_name"`
+	Languages          string      `json:"languages"`
+	CountryArea        float64     `json:"country_area"`
+	CountryPopulation  int         `json:"country_population"`
+	Asn                string      `json:"asn"`
+	Org                string      `json:"org"`
 }
