@@ -7,8 +7,15 @@ import (
 	"strings"
 )
 
+// Env returns a string from os env
 func Env(key string) string {
 	return os.Getenv(key)
+}
+
+// Envs returns an array of string
+func Envs(key string) []string {
+	s := Env(key)
+	return strings.Split(s, ",")
 }
 
 func EnvToLower(key string) string {
