@@ -1,6 +1,7 @@
 package gommon
 
 import (
+	"github.com/hamidteimouri/gommon/htregex"
 	"net/url"
 	"regexp"
 	"strings"
@@ -185,4 +186,19 @@ func IsValidHttpsUrl(url string) bool {
 		return true
 	}
 	return false
+}
+
+func IsEmailInDomain(email, domain string) bool {
+	if !htregex.IsEmail(email) {
+		return false
+	}
+
+	parts := strings.Split(email, "@")
+	if len(parts) != 2 {
+		// Invalid email format
+		return false
+	}
+
+	// Compare the extracted domain with the desired domain
+	return parts[1] == domain
 }
