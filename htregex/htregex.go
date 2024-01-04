@@ -69,7 +69,7 @@ func IBANs(text string) []string {
 	return match(text, IBANsRegex)
 }
 
-// IsIban check regex of an email
+// IsIban check regex of an IBAN
 func IsIban(text string) bool {
 	return IBANRegex.MatchString(text)
 }
