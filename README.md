@@ -3,12 +3,9 @@
 Gommon is a golang common package that provides several methods to use in your projects.<br>
 Gommon has several sub-package :
 
-- htapplife
 - htblockchain
 - htcolog ( colorful console logger )
 - htenvier ( ENV methods )
-- htformat ( change format of a string like email , ... )
-- htrandom ( random generator )
 - htregex  ( work with regex )
 
 ### htcolog
@@ -28,13 +25,15 @@ example :
 htenvier.ENV("DB_NAME")
 ```
 
-### htformat
+### Format
+Format email , username and ...
 
 example :
 
 ```go
-htformat.MakeEmailInvisible("exampleEmail@test.com") // output : exa***@test.com
-htformat.MakeUsernameInvisible("myusername") // output : my***me
+gommon.MakeMaskEmailAndDomain("usernaame@gmail.com")    // output : use***@gm**.com
+gommon.MakeMaskEmail("usernaame@gmail.com")             // output : use***@gmail.com
+gommon.MakeMaskUsername("myusername")                   // output : my***me
 ```
 
 ### htregex

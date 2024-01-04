@@ -14,7 +14,7 @@ func MakeMaskEmailAndDomain(email string) string {
 		return ""
 	}
 	if !htregex.IsEmail(email) {
-		return MakeUsernameInvisible(email)
+		return MakeMaskUsername(email)
 	}
 	split := strings.Split(email, "@")
 
@@ -57,7 +57,7 @@ func MakeMaskEmail(email string) string {
 		return ""
 	}
 	if !htregex.IsEmail(email) {
-		return MakeUsernameInvisible(email)
+		return MakeMaskUsername(email)
 	}
 	split := strings.Split(email, "@")
 
@@ -76,25 +76,25 @@ func MakeMaskEmail(email string) string {
 	return hiddenEmail
 }
 
-// MakeUsernameInvisible removes username's characters.
+// MakeMaskUsername removes username's characters.
 // for example converts 'username' to 'us***me'
-func MakeUsernameInvisible(username string) string {
+func MakeMaskUsername(username string) string {
 	if username == "" {
 		return ""
 	}
 
-	hiddenEmail := ""
+	masked := ""
 	for i := 0; i < len(username)-2; i++ {
 		if i >= 2 {
 			if i <= 4 {
-				hiddenEmail += "*"
+				masked += "*"
 			}
 		} else {
-			hiddenEmail += string(username[i])
+			masked += string(username[i])
 		}
 	}
-	hiddenEmail += username[len(username)-2:]
-	return hiddenEmail
+	masked += username[len(username)-2:]
+	return masked
 }
 
 // RemoveThousandsSeparator removes (,) from the number.
