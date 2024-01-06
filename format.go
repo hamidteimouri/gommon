@@ -110,7 +110,44 @@ func RemoveThousandsSeparator(number string) (float64, error) {
 }
 
 // Slugify converts a string to a slug.
-// for example converts "this is test" to "this-is-test"
+// for example converts "this is a test" to "this-is-a-test"
 func Slugify(str string) string {
 	return strings.Replace(str, " ", "-", -1)
+}
+
+// ConvertArabicAlphabetToPersian replace arabic character with persian equivalent
+func ConvertArabicAlphabetToPersian(str string) string {
+	table := map[string]string{"ك": "ک", "ي": "ی"}
+	for ar, fa := range table {
+		str = strings.ReplaceAll(str, ar, fa)
+	}
+
+	return str
+}
+
+// ConvertNumberArabicToEnglish replace all arabic numbers to english equivalent
+func ConvertNumberArabicToEnglish(num string) string {
+	table := map[string]string{"٠": "0", "١": "1", "٢": "2",
+		"٣": "3", "٤": "4",
+		"٥": "5", "٦": "6", "٧": "7",
+		"٨": "8", "٩": "9",
+	}
+	for per, eng := range table {
+		num = strings.ReplaceAll(num, per, eng)
+	}
+
+	return num
+}
+
+// ConvertNumberPersianToEnglish replace persian number with english equivalent
+func ConvertNumberPersianToEnglish(num string) string {
+	table := map[string]string{"۰": "0", "۱": "1", "۲": "2", "۳": "3",
+		"۴": "4", "۵": "5", "۶": "6", "۷": "7",
+		"۸": "8", "۹": "9",
+	}
+	for per, eng := range table {
+		num = strings.ReplaceAll(num, per, eng)
+	}
+
+	return num
 }
