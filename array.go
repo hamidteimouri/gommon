@@ -1,5 +1,7 @@
 package gommon
 
+import "strings"
+
 // Contains check the string is in an array or not
 func Contains(s []string, str string) bool {
 	for _, v := range s {
@@ -22,4 +24,16 @@ func ArrayOverlap(mainArray, secondArray []string) bool {
 		}
 	}
 	return true
+}
+
+func ConvertQueryStringToArray(query string) []string {
+	if query == "" {
+		return nil
+	}
+	query = strings.TrimLeft(query, "[")
+	query = strings.TrimRight(query, "]")
+	query = strings.TrimRight(query, ",")
+	query = strings.TrimLeft(query, ",")
+	splitQuery := strings.Split(query, ",")
+	return splitQuery
 }

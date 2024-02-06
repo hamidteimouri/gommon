@@ -151,3 +151,13 @@ func ConvertNumberPersianToEnglish(num string) string {
 
 	return num
 }
+
+func TrimSpacesTabsNewlines(inputString string) string {
+	// Replace all spaces, tabs, and newlines with an empty string
+	trimmedString := strings.ReplaceAll(inputString, " ", "")
+	trimmedString = strings.ReplaceAll(trimmedString, "\t", "")
+	trimmedString = strings.ReplaceAll(trimmedString, "\n", "")
+	trimmedString = strings.ReplaceAll(trimmedString, "\r", "")
+
+	return trimmedString
+}
