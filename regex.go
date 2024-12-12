@@ -17,6 +17,8 @@ const (
 	IPPattern     = IPv4Pattern + `|` + IPv6Pattern
 	IBANsPattern  = `[A-Z]{2}\d{2}[A-Z0-9]{4}\d{7}([A-Z\d]?){0,16}`
 	IBANPattern   = `^([A-Z]{2}\d{2}[A-Z0-9]{4}\d{7}([A-Z\d]?){0,16})$`
+
+	PersianMobilePattern = `/^(?:\(+98)|(0098)|(0)?9\d{2}\d{3}\d{4}$/` // 09120000000 | +989120000000 | 00989120000000
 )
 
 var (

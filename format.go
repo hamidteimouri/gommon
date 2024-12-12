@@ -151,3 +151,28 @@ func ConvertNumberPersianToEnglish(num string) string {
 
 	return num
 }
+
+func TrimSpacesTabsNewlines(inputString string) string {
+	// Replace all spaces, tabs, and newlines with an empty string
+	trimmedString := strings.ReplaceAll(inputString, " ", "")
+	trimmedString = strings.ReplaceAll(trimmedString, "\t", "")
+	trimmedString = strings.ReplaceAll(trimmedString, "\n", "")
+	trimmedString = strings.ReplaceAll(trimmedString, "\r", "")
+
+	return trimmedString
+}
+
+func CutPrecision(input string, precision int) string {
+	// Split the string into the integer and fractional parts
+	parts := strings.Split(input, ".")
+	if len(parts) == 2 {
+		// Cut the fractional part to the required precision
+		if len(parts[1]) > precision {
+			parts[1] = parts[1][:precision]
+		}
+		// Recombine the integer and cut fractional parts
+		return parts[0] + "." + parts[1]
+	}
+	// If no fractional part, return the input as-is
+	return input
+}

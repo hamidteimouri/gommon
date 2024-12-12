@@ -3,6 +3,7 @@ package gommon
 import (
 	"net/url"
 	"regexp"
+	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -200,4 +201,32 @@ func IsEmailInDomain(email, domain string) bool {
 
 	// Compare the extracted domain with the desired domain
 	return parts[1] == domain
+}
+
+// ValidateCreditCardNumber validate credit card number (persian one)
+func ValidateCreditCardNumber(code string) bool {
+	L := len(code)
+	if L < 16 || parseInt(code[1:11]) == 0 || parseInt(code[10:16]) == 0 {
+		return false
+	}
+	s := 0
+	var k, d int
+	for i := 0; i < 16; i++ {
+		k = 1
+		if i%2 == 0 {
+			k = 2
+		}
+		d, _ = strconv.Atoi(string(code[i]))
+		d *= k
+		if d > 9 {
+			d -= 9
+		}
+		s += d
+	}
+	return s%10 == 0
+}
+
+func parseInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
 }
