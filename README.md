@@ -1,12 +1,11 @@
 # Gommon (Golang Common)
 
-Gommon is a golang common package that provides several methods to use in your projects.<br>
-Gommon has several sub-package :
+`gommon` is a golang common package that provides several methods to use in your projects.<br>
+`gommon` has several sub-package :
 
-- htblockchain
+
 - htcolog ( colorful console logger )
 - htenvier ( ENV methods )
-- htregex  ( work with regex )
 
 ### htcolog
 
@@ -25,7 +24,7 @@ example :
 htenvier.ENV("DB_NAME")
 ```
 
-### Format
+### Format & Validation
 Format email , username and ...
 
 example :
@@ -34,12 +33,5 @@ example :
 gommon.MakeMaskEmailAndDomain("usernaame@gmail.com")    // output : use***@gm**.com
 gommon.MakeMaskEmail("usernaame@gmail.com")             // output : use***@gmail.com
 gommon.MakeMaskUsername("myusername")                   // output : my***me
-```
-
-### htregex
-
-example :
-
-```go
-htregex.IsEmail("username@gmail.com")
+gommon.IsEmail("username@gmail.com")
 ```

@@ -1,4 +1,4 @@
-package htblockchian
+package gommon
 
 var (
 	NetworkBitcoinExplorer           = "https://blockchair.com/bitcoin/transaction/"

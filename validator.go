@@ -1,7 +1,6 @@
 package gommon
 
 import (
-	"github.com/hamidteimouri/gommon/htregex"
 	"net/url"
 	"regexp"
 	"strings"
@@ -189,7 +188,7 @@ func IsValidHttpsUrl(url string) bool {
 }
 
 func IsEmailInDomain(email, domain string) bool {
-	if !htregex.IsEmail(email) {
+	if !IsEmail(email) {
 		return false
 	}
 

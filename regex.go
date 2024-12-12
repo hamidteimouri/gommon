@@ -1,4 +1,4 @@
-package htregex
+package gommon
 
 /*
 *  Used https://github.com/mingrammer/commonregex/blob/master/commonregex.go
