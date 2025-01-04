@@ -12,6 +12,7 @@ var (
 	ChainBSC = "smartchain"
 	ChainBNB = "binance"
 	ChainTRX = "tron"
+	ChainTon = "tron"
 
 	Chains = map[string]string{
 		ChainBTC: NetworkBitcoinExplorer,
