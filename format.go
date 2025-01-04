@@ -2,7 +2,6 @@ package gommon
 
 import (
 	"fmt"
-	"github.com/hamidteimouri/gommon/htregex"
 	"strconv"
 	"strings"
 )
@@ -13,7 +12,7 @@ func MakeMaskEmailAndDomain(email string) string {
 	if email == "" {
 		return ""
 	}
-	if !htregex.IsEmail(email) {
+	if !IsEmail(email) {
 		return MakeMaskUsername(email)
 	}
 	split := strings.Split(email, "@")
@@ -56,7 +55,7 @@ func MakeMaskEmail(email string) string {
 	if email == "" {
 		return ""
 	}
-	if !htregex.IsEmail(email) {
+	if !IsEmail(email) {
 		return MakeMaskUsername(email)
 	}
 	split := strings.Split(email, "@")

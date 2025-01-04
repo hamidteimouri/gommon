@@ -1,6 +1,9 @@
 package gommon
 
-import "strings"
+import (
+	"reflect"
+	"strings"
+)
 
 // Contains check the string is in an array or not
 func Contains(s []string, str string) bool {
@@ -73,4 +76,15 @@ func ConvertQueryStringToArray(query string) []string {
 	query = strings.TrimLeft(query, ",")
 	splitQuery := strings.Split(query, ",")
 	return splitQuery
+}
+
+func IsSlice(v interface{}) bool {
+	if v == nil {
+		return false
+	}
+	return reflect.TypeOf(v).Kind() == reflect.Slice
+}
+
+func IsArray(v interface{}) bool {
+	return IsSlice(v)
 }
