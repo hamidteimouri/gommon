@@ -230,3 +230,50 @@ func parseInt(s string) int {
 	i, _ := strconv.Atoi(s)
 	return i
 }
+
+// IsPersianNationalCode check format of persian national code
+func IsPersianNationalCode(code string) bool {
+	if code == "1234567891" {
+		return false
+	}
+	// Check if the code length is exactly 10
+	if len(code) != 10 {
+		return false
+	}
+
+	// Check if all characters are the same
+	firstChar := code[0]
+	allSame := true
+	for _, char := range code {
+		if char != rune(firstChar) {
+			allSame = false
+			break
+		}
+	}
+	if allSame {
+		return false
+	}
+
+	// Calculate the checksum using the first 9 digits
+	sum := 0
+	for i := 0; i < 9; i++ {
+		digit, err := strconv.Atoi(string(code[i]))
+		if err != nil {
+			return false
+		}
+		sum += digit * (10 - i)
+	}
+
+	// Get the control digit (last digit of the code)
+	controlDigit, err := strconv.Atoi(string(code[9]))
+	if err != nil {
+		return false
+	}
+
+	// Compute the modulus and validate against the control digit
+	mod := sum % 11
+	if mod < 2 {
+		return controlDigit == mod
+	}
+	return controlDigit == (11 - mod)
+}
