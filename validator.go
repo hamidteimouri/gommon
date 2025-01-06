@@ -233,11 +233,21 @@ func parseInt(s string) int {
 
 // IsPersianNationalCode check format of persian national code
 func IsPersianNationalCode(code string) bool {
-	if code == "1234567891" {
+	if code == "1234567891" || code == "" {
 		return false
 	}
+
+	// Length of code
+	L := len(code)
+
 	// Check if the code length is exactly 10
-	if len(code) != 10 {
+	if L != 10 {
+		return false
+	}
+
+	// If length is less than 8 or code is zero, return false
+	codeInt, err := strconv.Atoi(code)
+	if err != nil || L < 8 || codeInt == 0 {
 		return false
 	}
 
@@ -254,26 +264,34 @@ func IsPersianNationalCode(code string) bool {
 		return false
 	}
 
-	// Calculate the checksum using the first 9 digits
-	sum := 0
+	// Pad the code with zeros from the left if length is less than 10
+	if L < 10 {
+		code = strings.Repeat("0", 10-L) + code
+	}
+
+	// Check if the substring [3:9] is zero
+	subStr, err := strconv.Atoi(code[3:9])
+	if err != nil || subStr == 0 {
+		return false
+	}
+
+	// Extract checksum digit (last digit of code)
+	c, err := strconv.Atoi(string(code[9]))
+	if err != nil {
+		return false
+	}
+
+	// Compute the weighted sum of the first 9 digits
+	s := 0
 	for i := 0; i < 9; i++ {
 		digit, err := strconv.Atoi(string(code[i]))
 		if err != nil {
 			return false
 		}
-		sum += digit * (10 - i)
+		s += digit * (10 - i)
 	}
 
-	// Get the control digit (last digit of the code)
-	controlDigit, err := strconv.Atoi(string(code[9]))
-	if err != nil {
-		return false
-	}
-
-	// Compute the modulus and validate against the control digit
-	mod := sum % 11
-	if mod < 2 {
-		return controlDigit == mod
-	}
-	return controlDigit == (11 - mod)
+	// Validate checksum
+	s %= 11
+	return (s < 2 && c == s) || (s >= 2 && c == (11-s))
 }
