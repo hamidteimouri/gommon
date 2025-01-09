@@ -295,3 +295,13 @@ func IsPersianNationalCode(code string) bool {
 	s %= 11
 	return (s < 2 && c == s) || (s >= 2 && c == (11-s))
 }
+
+// IsPersianMobile check format of persian mobile number, for example : 09123456789
+func IsPersianMobile(number string) bool {
+	regex := `09\d{9}`
+	matched, _ := regexp.MatchString(regex, number)
+	if matched {
+		return true
+	}
+	return false
+}
