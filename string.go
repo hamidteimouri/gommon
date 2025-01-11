@@ -1,7 +1,11 @@
 package gommon
 
+import "strings"
+
 // SimilarityPercentage calculates the similarity percentage between two strings
 func SimilarityPercentage(a, b string) float64 {
+	a = strings.ReplaceAll(a, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
+	b = strings.ReplaceAll(a, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
 	distance := levenshteinDistance(a, b)
 	maxLen := max(len(a), len(b))
 	if maxLen == 0 {
