@@ -6,6 +6,8 @@ import "strings"
 func SimilarityPercentage(a, b string) float64 {
 	a = strings.ReplaceAll(a, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
 	b = strings.ReplaceAll(a, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
+	a = strings.TrimSpace(a)
+	b = strings.TrimSpace(b)
 	distance := levenshteinDistance(a, b)
 	maxLen := max(len(a), len(b))
 	if maxLen == 0 {
@@ -78,4 +80,10 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func SanitiseSpace(str string) string {
+	str = strings.ReplaceAll(str, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
+	str = strings.TrimSpace(str)
+	return str
 }
