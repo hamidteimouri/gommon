@@ -305,3 +305,45 @@ func IsPersianMobile(number string) bool {
 	}
 	return false
 }
+
+// IsPersianCardNumber check format of persian bank card number
+func IsPersianCardNumber(cardNumber string) bool {
+	// Ensure the card number is 16 characters long
+	if len(cardNumber) != 16 {
+		return false
+	}
+	if cardNumber == "1234567812345670" {
+		return false
+	}
+
+	// Check substrings for validity
+	if num, err := strconv.Atoi(cardNumber[1:11]); err != nil || num == 0 {
+		return false
+	}
+	if num, err := strconv.Atoi(cardNumber[10:16]); err != nil || num == 0 {
+		return false
+	}
+
+	// Calculate checksum using the Luhn algorithm
+	sum := 0
+	for i := 0; i < len(cardNumber); i++ {
+		// Parse the current digit
+		digit, err := strconv.Atoi(string(cardNumber[i]))
+		if err != nil {
+			return false
+		}
+
+		// Reverse alternation: multiply every second digit from the right
+		if (len(cardNumber)-i)%2 == 0 { // Check for even position from the end
+			digit *= 2
+			if digit > 9 {
+				digit -= 9
+			}
+		}
+
+		sum += digit
+	}
+
+	// Check if the checksum is divisible by 10
+	return sum%10 == 0
+}

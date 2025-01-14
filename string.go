@@ -4,10 +4,17 @@ import "strings"
 
 // SimilarityPercentage calculates the similarity percentage between two strings
 func SimilarityPercentage(a, b string) float64 {
+	if a != "" && b == "" {
+		return 0
+	}
+	if b != "" && a == "" {
+		return 0
+	}
 	a = strings.ReplaceAll(a, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
-	b = strings.ReplaceAll(a, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
+	b = strings.ReplaceAll(b, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
 	a = strings.TrimSpace(a)
 	b = strings.TrimSpace(b)
+
 	distance := levenshteinDistance(a, b)
 	maxLen := max(len(a), len(b))
 	if maxLen == 0 {
