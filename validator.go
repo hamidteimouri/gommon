@@ -347,3 +347,8 @@ func IsPersianCardNumber(cardNumber string) bool {
 	// Check if the checksum is divisible by 10
 	return sum%10 == 0
 }
+
+func IsInteger(s string) bool {
+	_, err := strconv.Atoi(s)
+	return err == nil
+}

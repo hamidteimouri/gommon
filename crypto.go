@@ -14,3 +14,14 @@ func Base64ToHex(base64str string) (string, error) {
 
 	return hex.EncodeToString(binary), nil
 }
+
+func HexToBase64(hexStr string) (string, error) {
+	// Decode the hex string into binary data
+	binary, err := hex.DecodeString(hexStr)
+	if err != nil {
+		return "", err
+	}
+
+	// Encode the binary data into a Base64 string
+	return base64.StdEncoding.EncodeToString(binary), nil
+}
