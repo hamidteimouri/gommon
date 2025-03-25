@@ -1,6 +1,9 @@
 package gommon
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
 // SimilarityPercentage calculates the similarity percentage between two strings
 func SimilarityPercentage(a, b string) float64 {
@@ -93,4 +96,22 @@ func SanitiseSpace(str string) string {
 	str = strings.ReplaceAll(str, "\u200C", "") //  remove ZWNJ ( zero-width non-joiner )
 	str = strings.TrimSpace(str)
 	return str
+}
+
+func Sluginfy(input string) string {
+	if input == "" {
+		return input
+	}
+
+	// Convert to lowercase
+	slug := strings.ToLower(input)
+
+	// Replace spaces with hyphen
+	slug = strings.ReplaceAll(slug, " ", "-")
+
+	// Remove special characters using regular expressions
+	regex := regexp.MustCompile("[^a-z0-9-]")
+	slug = regex.ReplaceAllString(slug, "")
+
+	return slug
 }

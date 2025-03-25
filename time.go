@@ -5,6 +5,10 @@ import (
 	"strconv"
 )
 
+const (
+	TimezoneTehran = "Asia/Tehran"
+)
+
 // PersianDateSplitter splits a number into x, y, z parts based on specific rules.
 // for example : '13690516' => 1369 , 05 , 16
 func PersianDateSplitter(input string) (x, y, z int, err error) {
