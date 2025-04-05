@@ -173,6 +173,9 @@ func CutPrecision(input string, precision int) string {
 		// Recombine the integer and cut fractional parts
 		return parts[0] + "." + parts[1]
 	}
+
+	input = strings.TrimRight(input, ".")
+
 	// If no fractional part, return the input as-is
 	return input
 }
