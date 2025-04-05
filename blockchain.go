@@ -1,4 +1,4 @@
-package htblockchian
+package gommon
 
 var (
 	NetworkBitcoinExplorer           = "https://blockchair.com/bitcoin/transaction/"
@@ -12,6 +12,7 @@ var (
 	ChainBSC = "smartchain"
 	ChainBNB = "binance"
 	ChainTRX = "tron"
+	ChainTon = "tron"
 
 	Chains = map[string]string{
 		ChainBTC: NetworkBitcoinExplorer,

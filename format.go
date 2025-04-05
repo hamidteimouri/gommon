@@ -1,8 +1,8 @@
 package gommon
 
 import (
+	"bytes"
 	"fmt"
-	"github.com/hamidteimouri/gommon/htregex"
 	"strconv"
 	"strings"
 )
@@ -13,7 +13,7 @@ func MakeMaskEmailAndDomain(email string) string {
 	if email == "" {
 		return ""
 	}
-	if !htregex.IsEmail(email) {
+	if !IsEmail(email) {
 		return MakeMaskUsername(email)
 	}
 	split := strings.Split(email, "@")
@@ -56,7 +56,7 @@ func MakeMaskEmail(email string) string {
 	if email == "" {
 		return ""
 	}
-	if !htregex.IsEmail(email) {
+	if !IsEmail(email) {
 		return MakeMaskUsername(email)
 	}
 	split := strings.Split(email, "@")
@@ -178,4 +178,29 @@ func CutPrecision(input string, precision int) string {
 
 	// If no fractional part, return the input as-is
 	return input
+}
+
+// FormatNumber adds commas as thousands separators to a number string.
+func FormatNumber(input string) string {
+	// Split the input into the integer and fractional parts
+	parts := strings.Split(input, ".")
+	integerPart := parts[0]
+
+	// Handle the integer part
+	var buffer bytes.Buffer
+	length := len(integerPart)
+	for i, char := range integerPart {
+		buffer.WriteRune(char)
+		if (length-i-1)%3 == 0 && i != length-1 {
+			buffer.WriteRune(',')
+		}
+	}
+
+	// Append the fractional part if it exists
+	if len(parts) > 1 {
+		buffer.WriteString(".")
+		buffer.WriteString(parts[1])
+	}
+
+	return buffer.String()
 }

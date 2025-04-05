@@ -1,6 +1,9 @@
 package gommon
 
-import "strings"
+import (
+	"reflect"
+	"strings"
+)
 
 // Contains check the string is in an array or not
 func Contains(s []string, str string) bool {
@@ -10,6 +13,16 @@ func Contains(s []string, str string) bool {
 		}
 	}
 
+	return false
+}
+
+// InArray is a function like Contains
+func InArray(arr []string, str string) bool {
+	for _, v := range arr {
+		if v == str {
+			return true
+		}
+	}
 	return false
 }
 
@@ -26,6 +39,33 @@ func ArrayOverlap(mainArray, secondArray []string) bool {
 	return true
 }
 
+func ConvertMapToSlice[T any](m map[any]T) []T {
+	s := make([]T, 0)
+	for _, v := range m {
+		s = append(s, v)
+	}
+
+	return s
+}
+
+func CloneMap[K comparable, V any](m map[K]V) map[K]V {
+	n := make(map[K]V)
+	for k, v := range m {
+		n[k] = v
+	}
+
+	return n
+}
+
+func CloneSlice[V any](s []V) []V {
+	t := make([]V, 0)
+	for _, v := range s {
+		t = append(t, v)
+	}
+
+	return t
+}
+
 func ConvertQueryStringToArray(query string) []string {
 	if query == "" {
 		return nil
@@ -36,4 +76,15 @@ func ConvertQueryStringToArray(query string) []string {
 	query = strings.TrimLeft(query, ",")
 	splitQuery := strings.Split(query, ",")
 	return splitQuery
+}
+
+func IsSlice(v interface{}) bool {
+	if v == nil {
+		return false
+	}
+	return reflect.TypeOf(v).Kind() == reflect.Slice
+}
+
+func IsArray(v interface{}) bool {
+	return IsSlice(v)
 }

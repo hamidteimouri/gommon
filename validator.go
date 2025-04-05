@@ -1,7 +1,6 @@
 package gommon
 
 import (
-	"github.com/hamidteimouri/gommon/htregex"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -190,7 +189,7 @@ func IsValidHttpsUrl(url string) bool {
 }
 
 func IsEmailInDomain(email, domain string) bool {
-	if !htregex.IsEmail(email) {
+	if !IsEmail(email) {
 		return false
 	}
 
@@ -230,4 +229,126 @@ func ValidateCreditCardNumber(code string) bool {
 func parseInt(s string) int {
 	i, _ := strconv.Atoi(s)
 	return i
+}
+
+// IsPersianNationalCode check format of persian national code
+func IsPersianNationalCode(code string) bool {
+	if code == "1234567891" || code == "" {
+		return false
+	}
+
+	// Length of code
+	L := len(code)
+
+	// Check if the code length is exactly 10
+	if L != 10 {
+		return false
+	}
+
+	// If length is less than 8 or code is zero, return false
+	codeInt, err := strconv.Atoi(code)
+	if err != nil || L < 8 || codeInt == 0 {
+		return false
+	}
+
+	// Check if all characters are the same
+	firstChar := code[0]
+	allSame := true
+	for _, char := range code {
+		if char != rune(firstChar) {
+			allSame = false
+			break
+		}
+	}
+	if allSame {
+		return false
+	}
+
+	// Pad the code with zeros from the left if length is less than 10
+	if L < 10 {
+		code = strings.Repeat("0", 10-L) + code
+	}
+
+	// Check if the substring [3:9] is zero
+	subStr, err := strconv.Atoi(code[3:9])
+	if err != nil || subStr == 0 {
+		return false
+	}
+
+	// Extract checksum digit (last digit of code)
+	c, err := strconv.Atoi(string(code[9]))
+	if err != nil {
+		return false
+	}
+
+	// Compute the weighted sum of the first 9 digits
+	s := 0
+	for i := 0; i < 9; i++ {
+		digit, err := strconv.Atoi(string(code[i]))
+		if err != nil {
+			return false
+		}
+		s += digit * (10 - i)
+	}
+
+	// Validate checksum
+	s %= 11
+	return (s < 2 && c == s) || (s >= 2 && c == (11-s))
+}
+
+// IsPersianMobile check format of persian mobile number, for example : 09123456789
+func IsPersianMobile(number string) bool {
+	regex := `09\d{9}`
+	matched, _ := regexp.MatchString(regex, number)
+	if matched {
+		return true
+	}
+	return false
+}
+
+// IsPersianCardNumber check format of persian bank card number
+func IsPersianCardNumber(cardNumber string) bool {
+	// Ensure the card number is 16 characters long
+	if len(cardNumber) != 16 {
+		return false
+	}
+	if cardNumber == "1234567812345670" {
+		return false
+	}
+
+	// Check substrings for validity
+	if num, err := strconv.Atoi(cardNumber[1:11]); err != nil || num == 0 {
+		return false
+	}
+	if num, err := strconv.Atoi(cardNumber[10:16]); err != nil || num == 0 {
+		return false
+	}
+
+	// Calculate checksum using the Luhn algorithm
+	sum := 0
+	for i := 0; i < len(cardNumber); i++ {
+		// Parse the current digit
+		digit, err := strconv.Atoi(string(cardNumber[i]))
+		if err != nil {
+			return false
+		}
+
+		// Reverse alternation: multiply every second digit from the right
+		if (len(cardNumber)-i)%2 == 0 { // Check for even position from the end
+			digit *= 2
+			if digit > 9 {
+				digit -= 9
+			}
+		}
+
+		sum += digit
+	}
+
+	// Check if the checksum is divisible by 10
+	return sum%10 == 0
+}
+
+func IsInteger(s string) bool {
+	_, err := strconv.Atoi(s)
+	return err == nil
 }
