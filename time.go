@@ -3,10 +3,15 @@ package gommon
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 const (
-	TimezoneTehran = "Asia/Tehran"
+	TimezoneTehran   = "Asia/Tehran"
+	TimezoneDubai    = "Asia/Dubai"
+	TimezoneIstanbul = "Asia/Istanbul"
+	TimezoneKabul    = "Asia/Kabul"
+	TimezoneKuwait   = "Asia/Kuwait"
 )
 
 // PersianDateSplitter splits a number into x, y, z parts based on specific rules.
@@ -36,4 +41,40 @@ func PersianDateSplitter(input string) (x, y, z int, err error) {
 	}
 
 	return x, y, z, nil
+}
+
+// DurationUntilInTimezone returns remaining duration until a target time
+func DurationUntilInTimezone(hour, minute int, timezone string) (time.Duration, error) {
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		return 0, fmt.Errorf("failed to load timezone: %w", err)
+	}
+
+	now := time.Now().In(loc)
+	targetTime := time.Date(
+		now.Year(), now.Month(), now.Day(),
+		hour, minute, 0, 0, loc,
+	)
+
+	if now.After(targetTime) {
+		targetTime = targetTime.Add(24 * time.Hour)
+	}
+
+	return time.Until(targetTime), nil
+}
+
+// DurationUntilNextHour returns remaining duration until next hour
+func DurationUntilNextHour(timezone string) (time.Duration, error) {
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		return 0, fmt.Errorf("failed to load timezone %s: %w", timezone, err)
+	}
+
+	now := time.Now().In(loc)
+	nextHour := time.Date(
+		now.Year(), now.Month(), now.Day(),
+		now.Hour()+1, 0, 0, 0, loc,
+	)
+
+	return time.Until(nextHour), nil
 }
