@@ -2,8 +2,10 @@ package gommon
 
 import (
 	"crypto/rand"
+	"github.com/google/uuid"
 	"math/big"
 	mathRand "math/rand"
+	"strings"
 	"unsafe"
 )
 
@@ -44,4 +46,22 @@ func RandomOtpCode(length int) string {
 	}
 
 	return string(code)
+}
+
+// GenerateUniqueCode generates a unique lowercase code using a prefix and count of characters.
+// The code includes `count` characters randomly picked from different parts of the UUID.
+func GenerateUniqueCode(prefix string, count int) string {
+	u := uuid.New().String()
+	u = strings.ReplaceAll(u, "-", "") // remove dashes to simplify indexing
+
+	var builder strings.Builder
+	builder.WriteString(prefix)
+
+	// Spread out the characters by jumping evenly through the UUID
+	step := len(u) / count
+	for i := 0; i < count; i++ {
+		builder.WriteByte(u[i*step])
+	}
+
+	return strings.ToLower(builder.String())
 }

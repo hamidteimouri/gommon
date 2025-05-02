@@ -6,13 +6,14 @@ var (
 	NetworkBinanceSmartChainExplorer = "https://bscscan.com/tx/"
 	NetworkBinanceCoinExplorer       = "https://explorer.binance.org/tx/"
 	NetworkTronExplorer              = "https://blockchair.com/bitcoin/transaction/"
+	NetworkTonExplorer               = "https://tonviewer.com/transaction/"
 
 	ChainBTC = "bitcoin"
 	ChainETH = "ethereum"
 	ChainBSC = "smartchain"
 	ChainBNB = "binance"
 	ChainTRX = "tron"
-	ChainTon = "tron"
+	ChainTon = "ton"
 
 	Chains = map[string]string{
 		ChainBTC: NetworkBitcoinExplorer,
@@ -20,6 +21,7 @@ var (
 		ChainBSC: NetworkBinanceSmartChainExplorer,
 		ChainBNB: NetworkBinanceCoinExplorer,
 		ChainTRX: NetworkTronExplorer,
+		ChainTon: NetworkTonExplorer,
 	}
 )
 
