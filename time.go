@@ -78,3 +78,9 @@ func DurationUntilNextHour(timezone string) (time.Duration, error) {
 
 	return time.Until(nextHour), nil
 }
+
+func ConvertFloatToTime(t float64) time.Time {
+	seconds := int64(t)
+	nanoseconds := int64((t - float64(seconds)) * 1e9)
+	return time.Unix(seconds, nanoseconds)
+}

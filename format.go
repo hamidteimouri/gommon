@@ -97,6 +97,27 @@ func MakeMaskUsername(username string) string {
 	return masked
 }
 
+// MakeMaskCreditCard removes credit card's characters.
+// for example converts '1234567812345678' to '1234-56**-****-5678'
+func MakeMaskCreditCard(creditCard string) string {
+	if len(creditCard) != 16 {
+		return creditCard
+	}
+	// Remove any non-numeric characters from the input string
+	numericOnly := strings.Join(strings.FieldsFunc(creditCard, func(r rune) bool {
+		return r < '0' || r > '9'
+	}), "")
+
+	// Format the numeric string as "6037-99xx-xxxx-7744"
+	formatted := fmt.Sprintf("%s-%sxx-xxxx-%s",
+		numericOnly[:4],
+		numericOnly[4:6],
+		numericOnly[12:],
+	)
+
+	return formatted
+}
+
 // RemoveThousandsSeparator removes (,) from the number.
 // for example converts 1,009 to 1009
 func RemoveThousandsSeparator(number string) (float64, error) {
@@ -205,4 +226,17 @@ func FormatNumber(input string) string {
 	}
 
 	return buffer.String()
+}
+
+func IbanPersianSanitize(iban string) string {
+	if iban == "" {
+		return ""
+	}
+	if len(iban) == 24 {
+		iban = fmt.Sprintf("%s%s", "IR", iban)
+	}
+	if len(iban) == 26 {
+		return iban
+	}
+	return iban
 }

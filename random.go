@@ -2,10 +2,12 @@ package gommon
 
 import (
 	"crypto/rand"
+	"fmt"
 	"github.com/google/uuid"
 	"math/big"
 	mathRand "math/rand"
 	"strings"
+	"time"
 	"unsafe"
 )
 
@@ -64,4 +66,16 @@ func GenerateUniqueCode(prefix string, count int) string {
 	}
 
 	return strings.ToLower(builder.String())
+}
+
+// GenerateUniqueFilename creates a unique, safe filename based on title and timestamp.
+func GenerateUniqueFilename(title string) string {
+	now := time.Now()
+	cleanTitle := CleanFileName(title)
+	if cleanTitle == "" {
+		cleanTitle = fmt.Sprint(now.UnixNano())
+	}
+	hashed := HashStringHex(cleanTitle, 10)
+	timestamp := now.Format("20060102_150405")
+	return fmt.Sprintf("%s-%s", timestamp, hashed)
 }

@@ -1,6 +1,8 @@
 package gommon
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"regexp"
 	"strings"
 )
@@ -114,4 +116,35 @@ func Sluginfy(input string) string {
 	slug = regex.ReplaceAllString(slug, "")
 
 	return slug
+}
+
+func EscapeMarkdownV2(text string) string {
+	specialChars := `_*[]()~` + "`" + `>#+-=|{}.!`
+	for _, char := range specialChars {
+		text = strings.ReplaceAll(text, string(char), `\`+string(char))
+	}
+	return text
+}
+
+// CleanFileName returns a sanitized filename safe for most filesystems.
+// for example : report<2024>|draft.docx => "report2024draft.docx"
+func CleanFileName(fileName string) string {
+	// Characters not allowed in Windows file names: < > : " / \ | ? * and control characters
+	invalidChars := regexp.MustCompile(`[<>:"/\\|?*\x00-\x1F]`)
+	clean := invalidChars.ReplaceAllString(fileName, "")
+
+	// Replace multiple spaces with single dash (or underscore if preferred)
+	clean = strings.TrimSpace(clean)
+	clean = regexp.MustCompile(`\s+`).ReplaceAllString(clean, "-")
+
+	// Optionally, limit length or remove trailing dot
+	clean = strings.TrimRight(clean, ".")
+
+	return clean
+}
+
+// HashStringHex returns a trimmed hex-encoded SHA-256 hash of the input string.
+func HashStringHex(s string, length int) string {
+	hash := sha256.Sum256([]byte(s))
+	return hex.EncodeToString(hash[:])[:length]
 }
