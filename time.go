@@ -79,6 +79,38 @@ func DurationUntilNextHour(timezone string) (time.Duration, error) {
 	return time.Until(nextHour), nil
 }
 
+// DurationUntilNextInterval returns the duration until the next rounded interval (e.g., 5, 10, 15 mins) in the given timezone.
+func DurationUntilNextInterval(timezone string, intervalMinutes int) (time.Duration, error) {
+	if intervalMinutes <= 0 || intervalMinutes > 60 {
+		return 0, fmt.Errorf("invalid interval: must be between 1 and 60 minutes")
+	}
+
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		return 0, fmt.Errorf("failed to load timezone %s: %w", timezone, err)
+	}
+
+	now := time.Now().In(loc)
+
+	// Calculate how many minutes to add to reach the next interval
+	minutes := now.Minute()
+	roundedUpMin := ((minutes / intervalMinutes) + 1) * intervalMinutes
+
+	// Handle hour overflow
+	addHours := 0
+	if roundedUpMin >= 60 {
+		roundedUpMin = 0
+		addHours = 1
+	}
+
+	next := time.Date(
+		now.Year(), now.Month(), now.Day(),
+		now.Hour()+addHours, roundedUpMin, 0, 0, loc,
+	)
+
+	return time.Until(next), nil
+}
+
 func ConvertFloatToTime(t float64) time.Time {
 	seconds := int64(t)
 	nanoseconds := int64((t - float64(seconds)) * 1e9)
