@@ -65,7 +65,17 @@ func GenerateUniqueCode(prefix string, count int) string {
 		builder.WriteByte(u[i*step])
 	}
 
-	return strings.ToLower(builder.String())
+	code := strings.ToLower(builder.String())
+
+	if prefix == "" {
+		// If the first character is '0', replace it with '2'
+		if len(code) > 0 && code[0] == '0' {
+			code = code[:len(prefix)] + "2" + code[len(prefix)+1:]
+		}
+	}
+
+	return code
+
 }
 
 // GenerateUniqueFilename creates a unique, safe filename based on title and timestamp.
