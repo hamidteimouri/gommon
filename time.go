@@ -116,3 +116,14 @@ func ConvertFloatToTime(t float64) time.Time {
 	nanoseconds := int64((t - float64(seconds)) * 1e9)
 	return time.Unix(seconds, nanoseconds)
 }
+
+// BirthdateIsAbove used to check the birthdate is above 18 for example or not
+func BirthdateIsAbove(birthDate time.Time, target int) bool {
+
+	now := time.Now()
+	age := now.Year() - birthDate.Year()
+	if now.YearDay() < birthDate.YearDay() {
+		age--
+	}
+	return age >= target
+}
