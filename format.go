@@ -205,9 +205,15 @@ func CutPrecision(input string, precision int) string {
 
 // FormatNumber adds commas as thousands separators to a number string.
 func FormatNumber(input string) string {
-	// Split the input into the integer and fractional parts
 	parts := strings.Split(input, ".")
 	integerPart := parts[0]
+
+	// Handle negative numbers
+	sign := ""
+	if strings.HasPrefix(integerPart, "-") {
+		sign = "-"
+		integerPart = integerPart[1:] // remove minus sign
+	}
 
 	// Handle the integer part
 	var buffer bytes.Buffer
@@ -225,7 +231,7 @@ func FormatNumber(input string) string {
 		buffer.WriteString(parts[1])
 	}
 
-	return buffer.String()
+	return sign + buffer.String()
 }
 
 func IbanPersianSanitize(iban string) string {
