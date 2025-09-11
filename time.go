@@ -127,3 +127,47 @@ func BirthdateIsAbove(birthDate time.Time, target int) bool {
 	}
 	return age >= target
 }
+
+// GetStartOfDay returns start a day
+// for example : 0 => today | 1 => yesterday | 2 => the day before yesterday
+func GetStartOfDay(daysAgo int, timezone string) (time.Time, string, error) {
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		return time.Time{}, "", fmt.Errorf("invalid timezone: %w", err)
+	}
+
+	now := time.Now().In(loc)
+	target := now.AddDate(0, 0, -daysAgo)
+
+	startOfDay := time.Date(
+		target.Year(),
+		target.Month(),
+		target.Day(),
+		0, 0, 0, 0,
+		loc,
+	).UTC()
+
+	return startOfDay, startOfDay.Format(time.DateTime), nil
+}
+
+// GetEndOfDay returns end of a day which you want
+// for example : if you set daysAgo to 1 , this returns 23:59:59:999999999 of yesterday
+func GetEndOfDay(daysAgo int, timezone string) (time.Time, string, error) {
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		return time.Time{}, "", fmt.Errorf("invalid timezone: %w", err)
+	}
+
+	now := time.Now().In(loc)
+	target := now.AddDate(0, 0, -daysAgo)
+
+	endOfDay := time.Date(
+		target.Year(),
+		target.Month(),
+		target.Day(),
+		23, 59, 59, 999_999_999, // آخرین نانوثانیه روز
+		loc,
+	).UTC()
+
+	return endOfDay, endOfDay.Format(time.DateTime), nil
+}
