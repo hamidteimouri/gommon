@@ -130,10 +130,10 @@ func BirthdateIsAbove(birthDate time.Time, target int) bool {
 
 // GetStartOfDay returns start a day
 // for example : 0 => today | 1 => yesterday | 2 => the day before yesterday
-func GetStartOfDay(daysAgo int, timezone string) (time.Time, string, error) {
+func GetStartOfDay(daysAgo int, timezone string) (time.Time, error) {
 	loc, err := time.LoadLocation(timezone)
 	if err != nil {
-		return time.Time{}, "", fmt.Errorf("invalid timezone: %w", err)
+		return time.Time{}, fmt.Errorf("invalid timezone: %w", err)
 	}
 
 	now := time.Now().In(loc)
@@ -147,15 +147,15 @@ func GetStartOfDay(daysAgo int, timezone string) (time.Time, string, error) {
 		loc,
 	).UTC()
 
-	return startOfDay, startOfDay.Format(time.DateTime), nil
+	return startOfDay, nil
 }
 
 // GetEndOfDay returns end of a day which you want
 // for example : if you set daysAgo to 1 , this returns 23:59:59:999999999 of yesterday
-func GetEndOfDay(daysAgo int, timezone string) (time.Time, string, error) {
+func GetEndOfDay(daysAgo int, timezone string) (time.Time, error) {
 	loc, err := time.LoadLocation(timezone)
 	if err != nil {
-		return time.Time{}, "", fmt.Errorf("invalid timezone: %w", err)
+		return time.Time{}, fmt.Errorf("invalid timezone: %w", err)
 	}
 
 	now := time.Now().In(loc)
@@ -169,5 +169,5 @@ func GetEndOfDay(daysAgo int, timezone string) (time.Time, string, error) {
 		loc,
 	).UTC()
 
-	return endOfDay, endOfDay.Format(time.DateTime), nil
+	return endOfDay, nil
 }
