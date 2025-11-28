@@ -2,6 +2,7 @@ package htenvier
 
 import (
 	_ "github.com/joho/godotenv/autoload"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -10,6 +11,14 @@ import (
 // Env returns a string from os env
 func Env(key string) string {
 	return os.Getenv(key)
+}
+
+func MustEnv(key string) string {
+	v := Env(key)
+	if v == "" {
+		log.Fatal("missing required environment : " + key)
+	}
+	return v
 }
 
 // Envs returns an array of string
