@@ -78,6 +78,18 @@ func ConvertQueryStringToArray(query string) []string {
 	return splitQuery
 }
 
+func ConvertStringToArray(query string) []string {
+	if query == "" {
+		return nil
+	}
+	query = strings.TrimLeft(query, "[")
+	query = strings.TrimRight(query, "]")
+	query = strings.TrimRight(query, ",")
+	query = strings.TrimLeft(query, ",")
+	splitQuery := strings.Split(query, ",")
+	return splitQuery
+}
+
 func IsSlice(v interface{}) bool {
 	if v == nil {
 		return false

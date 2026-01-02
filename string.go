@@ -21,7 +21,7 @@ func SimilarityPercentage(a, b string) float64 {
 	b = strings.TrimSpace(b)
 
 	distance := levenshteinDistance(a, b)
-	maxLen := max(len(a), len(b))
+	maxLen := maxItem(len(a), len(b))
 	if maxLen == 0 {
 		return 100.0
 	}
@@ -61,7 +61,7 @@ func levenshteinDistance(a, b string) int {
 				cost = 1
 			}
 
-			matrix[i][j] = min(
+			matrix[i][j] = minItem(
 				matrix[i-1][j]+1,      // Deletion
 				matrix[i][j-1]+1,      // Insertion
 				matrix[i-1][j-1]+cost, // Substitution
@@ -73,7 +73,7 @@ func levenshteinDistance(a, b string) int {
 }
 
 // min returns the minimum of three integers
-func min(a, b, c int) int {
+func minItem(a, b, c int) int {
 	if a < b {
 		if a < c {
 			return a
@@ -87,7 +87,7 @@ func min(a, b, c int) int {
 }
 
 // max returns the maximum of two integers
-func max(a, b int) int {
+func maxItem(a, b int) int {
 	if a > b {
 		return a
 	}
