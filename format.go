@@ -1,7 +1,6 @@
 package gommon
 
 import (
-	"bytes"
 	"fmt"
 	"strconv"
 	"strings"
@@ -209,32 +208,47 @@ func FormatNumber(input string) string {
 	input = strings.ReplaceAll(input, ",", "")
 
 	parts := strings.Split(input, ".")
-	integerPart := parts[0]
 
-	// Handle negative numbers
+	intPart := parts[0]
 	sign := ""
-	if strings.HasPrefix(integerPart, "-") {
+
+	if strings.HasPrefix(intPart, "-") {
 		sign = "-"
-		integerPart = integerPart[1:] // remove minus sign
+		intPart = intPart[1:]
+	}
+	if strings.HasPrefix(intPart, "+") {
+		sign = "+"
+		intPart = intPart[1:]
 	}
 
-	// Handle the integer part
-	var buffer bytes.Buffer
-	length := len(integerPart)
-	for i, char := range integerPart {
-		buffer.WriteRune(char)
-		if (length-i-1)%3 == 0 && i != length-1 {
-			buffer.WriteRune(',')
+	n := len(intPart)
+	if n <= 3 {
+		return input
+	}
+
+	var b strings.Builder
+	rem := n % 3
+	if rem > 0 {
+		b.WriteString(intPart[:rem])
+		if n > rem {
+			b.WriteByte(',')
 		}
 	}
 
-	// Append the fractional part if it exists
-	if len(parts) > 1 {
-		buffer.WriteString(".")
-		buffer.WriteString(parts[1])
+	for i := rem; i < n; i += 3 {
+		b.WriteString(intPart[i : i+3])
+		if i+3 < n {
+			b.WriteByte(',')
+		}
 	}
 
-	return sign + buffer.String()
+	result := sign + b.String()
+
+	if len(parts) > 1 {
+		result += "." + parts[1]
+	}
+
+	return result
 }
 
 func IbanPersianSanitize(iban string) string {
