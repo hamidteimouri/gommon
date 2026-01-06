@@ -205,6 +205,9 @@ func CutPrecision(input string, precision int) string {
 
 // FormatNumber adds commas as thousands separators to a number string.
 func FormatNumber(input string) string {
+	// remove existing commas
+	input = strings.ReplaceAll(input, ",", "")
+
 	parts := strings.Split(input, ".")
 	integerPart := parts[0]
 
