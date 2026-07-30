@@ -118,6 +118,22 @@ func Sluginfy(input string) string {
 	return slug
 }
 
+func Searchify(str string) string {
+	if str == "" {
+		return ""
+	}
+
+	// escape special LIKE characters
+	str = strings.ReplaceAll(str, `\`, `\\`)
+	str = strings.ReplaceAll(str, `%`, `\%`)
+	str = strings.ReplaceAll(str, `_`, `\_`)
+
+	// replace spaces with wildcard
+	str = strings.ReplaceAll(str, " ", "%")
+
+	return "%" + str + "%"
+}
+
 func EscapeMarkdownV2(text string) string {
 	specialChars := `_*[]()~` + "`" + `>#+-=|{}.!`
 	for _, char := range specialChars {

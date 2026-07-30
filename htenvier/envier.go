@@ -84,3 +84,14 @@ func EnvUint64(key string) (*uint64, error) {
 
 	return nil, nil
 }
+
+// EnvIntOrDefault returns env value as an integer
+// and returns a default value if there is an error during the conversion
+func EnvIntOrDefault(key string, defaultVal int) int {
+	if val := Env(key); val != "" {
+		if intVal, err := strconv.Atoi(val); err == nil {
+			return intVal
+		}
+	}
+	return defaultVal
+}
