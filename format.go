@@ -96,6 +96,27 @@ func MakeMaskUsername(username string) string {
 	return masked
 }
 
+// MakeMask removes a text's characters.
+// for example converts 'username' to 'us***me'
+func MakeMask(username string, start, end int) string {
+	if username == "" {
+		return ""
+	}
+
+	if start < 0 {
+		start = 0
+	}
+	if end < 0 {
+		end = 0
+	}
+
+	if start+end >= len(username) {
+		return username
+	}
+
+	return username[:start] + "***" + username[len(username)-end:]
+}
+
 // MakeMaskCreditCard removes credit card's characters.
 // for example converts '1234567812345678' to '1234-56**-****-5678'
 func MakeMaskCreditCard(creditCard string) string {
