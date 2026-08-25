@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 // SimilarityPercentage calculates the similarity percentage between two strings
@@ -163,4 +164,15 @@ func CleanFileName(fileName string) string {
 func HashStringHex(s string, length int) string {
 	hash := sha256.Sum256([]byte(s))
 	return hex.EncodeToString(hash[:])[:length]
+}
+
+// Capitalize makes first char capital, example : hello => Hello
+func Capitalize(s string) string {
+	r := []rune(s)
+	if len(r) == 0 {
+		return s
+	}
+
+	r[0] = unicode.ToUpper(r[0])
+	return string(r)
 }
